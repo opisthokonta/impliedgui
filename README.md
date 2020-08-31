@@ -26,26 +26,4 @@ impliedGUI()
 Screenshots
 ===========
 
-``` r
-knitr::include_graphics("README_files/pic1.png")
-```
-
-![](README_files/pic1.png)
-
-``` r
-knitr::include_graphics("README_files/pic3_2.png")
-```
-
-![](README_files/pic3_2.png)
-
-``` r
-knitr::include_graphics("README_files/pic4.png")
-```
-
-![](README_files/pic4.png)
-
-``` r
-knitr::include_graphics("README_files/pic5_2.png")
-```
-
-![](README_files/pic5_2.png)
+![](README_files/pic1.png)![](README_files/pic3_2.png)![](README_files/pic4.png)![](README_files/pic5_2.png)
