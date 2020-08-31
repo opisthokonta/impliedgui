@@ -32,22 +32,13 @@ impliedGUI()
 
 # Screenshots
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, echo=FALSE}
 knitr::include_graphics("README_files/pic1.png")
 knitr::include_graphics("README_files/pic3_2.png")
 knitr::include_graphics("README_files/pic4.png")
 knitr::include_graphics("README_files/pic5_2.png")
 
 ```
-
-
-
-
-
-
-
-
-
 
 
 
