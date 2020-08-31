@@ -1,0 +1,117 @@
+
+
+<p>This app lets you convert bookmaker odds into proper probabilities. Seven different algorithms are available. This app is based on my R package <a href="https://cran.r-project.org/package=implied">implied</a>.</p> 
+
+<p>To use this app, go to the <b>Load data</b> tab to upload your spreadsheet with the odds you want to convert. Then go to the <b>Convert odds</b> tab to select the conversion methods you want you use and download the results. </p>
+
+<p>The app only works with odds in decimal form. </p>
+
+
+<p><b>If you find this app useful, please consider supporting the development at <a href="https://ko-fi.com/opisthokonta">https://ko-fi.com/opisthokonta</a> </b></p>
+
+<p>You can also follow me on <a href="https://twitter.com/opisthokonta">my twitter</a> and check out my <a href="http://opisthokonta.net/">blog</a>.</p>
+
+
+<h3>Conversion methods</h3>
+
+<p>There are several conversion methods available. They rely on different assumptions on how the bookmakers convert their probabilities into odds.</p>
+
+<p>
+A naive way to convert bookamker odds to probabilities is to compute the inverse odds (1 divided by the odds). This naive conversion has two main problems. The first is that the probabilities are not proper probabilities, since they sum to more than 1. The excess probability is called the bookmakers margin. The second problem is that the probabilities, even if the margin is removed, can be biased in several ways, often leading to the <a href="https://en.wikipedia.org/wiki/Favourite-longshot_bias">favorite-longshot bias</a>. The available methods remove the bookmaker margin and some of them also tries to make adjustments for the favorite-longshot bias.
+</p>
+
+<h4>Basic</h4>
+
+<p>This is the simplest and most common method for converting bookmaker odds into probabilties, and is obtained by dividing the naive probabilities (the inverted odds) by the sum of the inverted odds. This method tend to be the least accurate of the methods available.
+
+If p<sub>i</sub> is the true underlying probability for outcome i, and r<sub>i</sub> is the cooresponding inverted odds, then the probabilities are computed as p<sub>i</sub> = r<sub>i</sub> / sum(r)
+
+</p>
+
+
+<h4>Odds ratio (or)</h4>
+
+
+<p>The odds ratio method is from an <a href="https://www.sportstradingnetwork.com/article/fixed-odds-betting-traditional-odds/">article by Keith Cheung</a>. This method models the relationship between the proper probabilities and the improper bookmaker probabilties using the odds ratio (OR) function:
+
+<p>OR = p<sub>i</sub> (1 - r<sub>i</sub>) / r<sub>i</sub> (1 - p<sub>i</sub>)</p>
+
+<p>This gives the probabilities</p>
+
+<p> p<sub>i</sub> = r<sub>i</sub> / OR + r<sub>i</sub> - (OR * r<sub>i</sub>) </p>
+
+where the odds ratio OR is selected so that sum(p<sub>i</sub>) = 1.
+</p>
+
+<p>
+This method also gives these additional columns:
+
+<ul>
+    <li><b>oddsratios</b> - The odds ratios OR relating the probabilities to bookmaker odds.</li>
+</ul>
+</p>
+
+
+<h4>Power</h4>
+
+<p>The power method models the bookmaker probabilties as a power function of the proper probabilties. This method is described in the Wisdom of the Crowds document, where it is referred to as the logarithmic method.
+
+<p>p<sub>i</sub> = r<sub>i</sub>(1/k)</p>
+
+where the exponent k is selected so that sum(p<sub>i</sub>) = 1.</p>
+
+<p>This method also gives these additional columns:</p>
+
+<ul>
+    <li><b>exponents</b> - The exponents k relating the probabilities to bookmaker odds.</li>
+</ul>
+
+</p>
+
+<h4>Additive</h4>
+
+The additive method removes the margin from the naive probabilites by subtracting an equal amount of of the margin from each outcome. The formula used is
+
+<p>p<sub>i</sub> = r<sub>i</sub> - ((sum(r<sub>i</sub>) - 1) / n)</p>
+
+where n is the number of outcomes.
+
+
+
+<h4>Margin Weights Proportional to the Odds (wpo)</h4>
+
+This method is from Joseph Buchdahl’s <a href="https://www.football-data.co.uk/wisdom_of_crowd_bets">Wisom of the Crowds document</a>, and assumes that the margin applied by the bookmaker for each of the outcome is proprtional to the probabilitiy of the outcome. In other words, the excessive probabilties are unevenly applied in a way that is reflects the favorite-longshot bias.
+
+The probabilities are calculated from the bookmaker odds O using the following formula
+
+<p>p<sub>i</sub>  = n * Oi / (n - M * Oi)</p>
+
+where n is the number of outcomes, and M is the bookmaker margin.
+
+<p>This method also one additional columns per outcome</p>
+
+<ul>
+    <li><b>*_specificmargins</b> - The bookmaker margin for the outcome.</li>
+</ul>
+
+<h4>Balanced books (bb) and Shin’s method (shin)</h4>
+
+The two methods referred to as “balanced book” and Shin’s method are based on the assumption that there is a small proportion of bettors that actually knows the outcome (called inside traders), and the rest of the bettors reflect the otherwise “true” uncertainty about the outcome. The proportion of inside traders is denoted Z.
+
+The two methods differ in what assumptions they make about how the bookmakers react to the pressence of inside traders. Shin’s method is derived from the assumption that the bookmakers tries to maximize their profits when there are inside traders. The balanced books method assumes the bookmakers tries to minimize their losses in the worst case scenario if the least likely outcome were to acctually occur.
+
+We can not know what the insiders know, but both methods gives an estimate of the proportion of insiders.
+
+
+<p>The methods also gives these additional columns:</p>
+
+<ul>
+    <li><b>shin_z</b> - The estimated proportion of insiders from Shin's method.</li>
+    <li><b>bb_z</b> - The estimated proportion of insiders from the bb method.</li>
+</ul>
+
+
+
+
+
+
